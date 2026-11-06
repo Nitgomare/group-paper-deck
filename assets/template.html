@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>组会论文汇报 · 模板</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0B1B33; --ink2:#2C3F58; --mute:#7B8DA6;
+  --paper:#F7FAFE; --mist:#E9F1FB;
+  --azure:#0F62D6; --cyan:#2FB2CC;
+  --line:rgba(11,27,51,.12); --line2:rgba(11,27,51,.07);
+}
+html{scroll-snap-type:y mandatory;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);
+  font-family:"Inter","Helvetica Neue",Arial,"Source Han Sans SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+
+.slide{height:100svh;scroll-snap-align:start;scroll-snap-stop:always;position:relative;
+  display:flex;flex-direction:column;overflow:hidden;
+  padding:clamp(46px,6.4vh,66px) clamp(40px,5vw,108px) clamp(24px,3.6vh,40px)}
+.deck[hidden]{display:none}
+.deck.noanim .rv{transition:none!important}
+.slide.sw-out{transform:translate3d(0,-18px,0) scale(.994);opacity:0;
+  transition:transform .34s cubic-bezier(.4,0,.72,.22),opacity .3s cubic-bezier(.4,0,.72,.22)}
+.slide.sw-in{animation:swIn .54s cubic-bezier(.22,1,.36,1) both}
+@keyframes swIn{0%{transform:translate3d(0,22px,0) scale(.994);opacity:0}
+  62%{opacity:1}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.slide.sw-out{transition:none}.slide.sw-in{animation:none}}
+.jsw{position:fixed;left:16px;top:11px;z-index:40;display:flex;gap:2px;padding:3px;border-radius:999px;
+  background:rgba(255,255,255,.76);border:1px solid rgba(11,27,51,.08);
+  box-shadow:0 2px 10px rgba(9,32,66,.06);
+  transition:box-shadow .35s,transform .35s,background .4s,border-color .4s}
+.jsw:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(9,32,66,.12)}
+.jsw:active{transform:translateY(0) scale(.985)}
+.jsw .ind{position:absolute;left:3px;top:3px;bottom:3px;border-radius:999px;background:#fff;
+  box-shadow:0 1px 5px rgba(9,32,66,.14);
+  transition:transform .46s cubic-bezier(.34,1.32,.44,1),width .46s cubic-bezier(.34,1.32,.44,1),
+             background .4s,opacity .3s;z-index:0;pointer-events:none}
+.jsw.noanim .ind{transition:none}
+.jsw button{position:relative;z-index:1;font:inherit;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  padding:5px 12px;border:0;border-radius:999px;background:transparent;color:var(--mute);cursor:pointer;
+  transition:color .3s ease,opacity .3s}
+.jsw button.on{color:var(--ink)}
+.jsw button:not(.on):hover{color:var(--ink2)}
+.jsw button:not(.on):active{color:var(--ink)}
+.jsw::after{content:"";position:absolute;inset:0;border-radius:999px;pointer-events:none;
+  box-shadow:0 0 0 0 rgba(15,98,214,.32);transition:box-shadow .5s}
+.jsw.pulse::after{box-shadow:0 0 0 7px rgba(15,98,214,0)}
+body.on-dark .jsw{background:rgba(255,255,255,.07);border-color:rgba(150,195,240,.2);box-shadow:none}
+body.on-dark .jsw:hover{box-shadow:0 6px 20px rgba(0,0,0,.35)}
+body.on-dark .jsw .ind{background:rgba(255,255,255,.16);box-shadow:none}
+body.on-dark .jsw button{color:#8FA9C8}
+body.on-dark .jsw button.on{color:#EAF3FD}
+@media (prefers-reduced-motion:reduce){
+  .jsw,.jsw .ind{transition:none}
+}
+.wrap{width:100%;max-width:1600px;margin:0 auto;flex:1;display:flex;flex-direction:column;min-height:0;position:relative;z-index:2}
+.rail{position:absolute;left:clamp(12px,2.2vw,36px);top:clamp(46px,6.4vh,66px);bottom:clamp(28px,4.6vh,56px);width:1px;background:var(--line)}
+.rail::after{content:"";position:absolute;left:-.5px;top:0;width:2px;background:var(--azure);height:var(--p,0%);opacity:.85}
+
+/* ---------- running head ---------- */
+.runhead{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:11px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase;
+  padding-bottom:11px;border-bottom:1px solid var(--line)}
+.runhead b{color:var(--ink2);font-weight:500;letter-spacing:.18em}
+
+/* ---------- paper body ---------- */
+.pgrid{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  grid-template-rows:minmax(0,1fr);
+  flex:1;min-height:0;padding-top:clamp(20px,3.4vh,44px)}
+.col-l{display:flex;flex-direction:column;min-width:0;min-height:0;padding-right:clamp(28px,3.4vw,64px)}
+.col-l>*{flex:0 0 auto}
+.col-r{display:flex;flex-direction:column;min-width:0;min-height:0;border-left:1px solid var(--line);
+  padding-left:clamp(28px,3.4vw,64px)}
+
+.topic{align-self:flex-start;font-size:clamp(11px,.86vw,32px);letter-spacing:.16em;color:var(--azure);
+  border:1px solid rgba(15,98,214,.3);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.num{margin-top:clamp(18px,3.4vh,42px);display:flex;align-items:baseline;gap:6px;
+  font-variant-numeric:tabular-nums;letter-spacing:-.03em;line-height:.92}
+.num b{font-size:clamp(46px,4.9vw,182px);font-weight:600;color:var(--azure)}
+.num span{font-size:clamp(13.5px,1.24vw,46px);color:var(--mute);font-weight:400;letter-spacing:0}
+.zh{margin-top:clamp(8px,1.6vh,16px);font-size:clamp(25px,2.3vw,86px);line-height:1.34;text-wrap:balance;
+  font-weight:600;letter-spacing:-.005em}
+.en{margin-top:clamp(8px,1.4vh,14px);font-size:clamp(13.5px,1.02vw,38px);line-height:1.6;
+  color:var(--ink2);max-width:44ch}
+.au{margin-top:clamp(16px,2.8vh,34px);padding-top:12px;border-top:1px solid var(--line2);
+  font-size:clamp(13px,.94vw,35px);line-height:1.85;color:var(--mute)}
+.au b{color:var(--ink2);font-weight:500}
+
+.klabel{margin-top:auto;padding-top:clamp(12px,2vh,22px);font-size:clamp(10.5px,.82vw,30px);letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.kws{display:flex;flex-wrap:wrap;gap:5px 6px;margin-top:8px}
+.kw{font-size:clamp(12.5px,.86vw,31px);line-height:1.4;padding:4px 10px;border-radius:999px;background:var(--mist);color:#1B4E9B;white-space:nowrap}
+.kw i{font-style:normal;opacity:.5;margin-left:5px;font-size:.92em}
+.note{margin-top:clamp(12px,1.9vh,22px);border-left:2px solid var(--cyan);padding-left:13px;
+  font-size:clamp(13.5px,.98vw,36px);line-height:1.72;color:var(--ink2)}
+.col-l.c1 .kw{padding:2px 9px}
+.col-l.c1 .kws{gap:4px 5px;margin-top:7px}
+.col-l.c1 .note{font-size:clamp(13px,.92vw,33px);line-height:1.6;margin-top:clamp(10px,1.5vh,17px)}
+.col-l.c1 .klabel{padding-top:clamp(10px,1.6vh,18px)}
+.col-l.c1 .au{margin-top:clamp(13px,2.2vh,26px)}
+.col-l.c2 .kw{font-size:clamp(11px,.78vw,27px);padding:2px 8px}
+.col-l.c2 .kws{gap:4px 5px;margin-top:6px}
+.col-l.c2 .note{font-size:clamp(12px,.86vw,30px);line-height:1.55}
+.col-l.c2 .zh{font-size:clamp(22px,2vw,74px)}
+.note em{font-style:normal;display:block;font-size:10px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase;margin-bottom:5px}
+
+.lbl{font-size:clamp(11px,.86vw,32px);letter-spacing:.2em;color:var(--azure);text-transform:uppercase}
+.abswrap{flex:1;min-height:0;display:flex;align-items:flex-start;padding:clamp(10px,2vh,22px) 0;overflow:hidden}
+.abs{font-size:20px;line-height:1.95;color:#1E3049;text-align:justify;text-justify:inter-ideograph;letter-spacing:.004em}
+.doi{margin-top:auto;padding-top:10px;border-top:1px solid var(--line2);font-size:clamp(11.5px,.9vw,33px);letter-spacing:.06em;color:var(--mute);
+  font-variant-numeric:tabular-nums;word-break:break-all}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translate3d(0,18px,0);
+  transition:opacity .88s cubic-bezier(.22,1,.36,1),transform .88s cubic-bezier(.22,1,.36,1);
+  transition-delay:min(calc(var(--i,0)*68ms),520ms)}
+.slide.in .rv{opacity:1;transform:none}
+h1.rv{transform:translate3d(0,26px,0);transition-duration:1.05s}
+h2.big.rv,h2.refhead.rv{transform:translate3d(0,22px,0);transition-duration:.98s}
+.runhead.rv,.kicker.rv,.lbl.rv,.klabel.rv,.cfoot.rv{transform:translate3d(0,9px,0);transition-duration:.66s}
+.ref.rv,.ov .row.rv{transform:translate3d(0,13px,0);transition-duration:.76s}
+@media (prefers-reduced-motion:reduce){.rv,h1.rv,h2.big.rv,h2.refhead.rv,.runhead.rv,.kicker.rv,.lbl.rv,.klabel.rv,.cfoot.rv,.ref.rv,.ov .row.rv{transition:none;transform:none;opacity:1}}
+
+/* ---------- dark pages ---------- */
+.dark{background:#061426;color:#E8F1FB}
+.dark .rail{background:rgba(232,241,251,.1)}
+.dark .rail::after{background:var(--cyan)}
+.glow{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(58% 62% at 18% 42%,rgba(47,178,204,.16),transparent 62%),
+             radial-gradient(46% 50% at 88% 78%,rgba(15,98,214,.22),transparent 66%);
+  animation:glowBreath 19s ease-in-out infinite;will-change:opacity,transform}
+@keyframes glowBreath{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.035)}}
+.cover-art{position:absolute;inset:0;z-index:0}
+.cover-art svg{width:100%;height:100%;display:block}
+.cover-art{mask-image:linear-gradient(102deg,rgba(0,0,0,.55) 8%,rgba(0,0,0,.95) 46%,rgba(0,0,0,.28) 88%);-webkit-mask-image:linear-gradient(102deg,rgba(0,0,0,.55) 8%,rgba(0,0,0,.95) 46%,rgba(0,0,0,.28) 88%)}
+.vtopics{position:absolute;right:clamp(64px,5.4vw,260px);top:27vh;bottom:15vh;z-index:3;
+  writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;
+  font-size:clamp(12px,.96vw,35px);letter-spacing:.36em;color:rgba(170,212,250,.58);
+  padding:0 13px;border-left:1px solid rgba(170,212,250,.16)}
+.vtopics span{display:inline}
+.vtopics .vsep{opacity:.5;letter-spacing:.3em}
+.stream{fill:none;stroke:rgba(150,205,255,.55);stroke-width:1;stroke-dasharray:3 13;animation:flow 30s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-640}}
+
+.csub{font-size:clamp(17px,1.6vw,60px);color:#A9C9EC;font-weight:400;
+  letter-spacing:.01em;margin-top:clamp(9px,1.5vh,18px)}
+.jmeta{font-size:clamp(10px,.84vw,32px);letter-spacing:.13em;font-weight:500;
+  color:rgba(160,196,236,.74);margin-top:clamp(9px,1.4vh,15px)}
+.kicker{font-size:clamp(10px,.76vw,28px);letter-spacing:.3em;text-transform:uppercase;color:#6FA9E8}
+h1{font-size:clamp(42px,5.6vw,210px);line-height:1.1;font-weight:600;letter-spacing:-.03em;margin-top:clamp(14px,2.6vh,28px);text-wrap:balance}
+.lede{margin-top:clamp(14px,2.4vh,26px);max-width:42ch;font-size:clamp(14px,1.12vw,42px);line-height:1.85;color:#A9C1DD}
+.cbody{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1100px}
+.cgrid{flex:1;display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(28px,5vw,96px);min-height:0}
+.cbody{max-width:clamp(520px,54vw,900px)}
+.about{margin-top:clamp(16px,2.6vh,30px);max-width:min(34em,640px);font-size:clamp(13px,1.02vw,38px);
+  line-height:1.95;color:#9DB6D4}
+.cside{display:flex;flex-direction:column;align-items:flex-end;gap:12px;flex:0 0 auto}
+.pl-cap{font-size:11px;letter-spacing:.06em;color:rgba(170,200,232,.62)}
+.cplate{position:relative;flex:0 0 auto;width:clamp(222px,19.6vw,312px);aspect-ratio:3/4;border-radius:4px;
+  overflow:hidden;opacity:.96;margin:0;
+  background:linear-gradient(168deg,#0E2C4E 0%,#0A1E36 46%,#061224 100%);
+  box-shadow:0 44px 96px -34px rgba(0,0,0,.9),inset 0 0 0 1px rgba(150,200,255,.10),0 0 0 1px rgba(150,195,240,.13);
+  -webkit-
+  mask-image:linear-gradient(188deg,#000 74%,rgba(0,0,0,.45) 94%,rgba(0,0,0,.2) 100%);
+  animation:plateFloat 14.5s cubic-bezier(.45,0,.55,1) infinite}
+@keyframes plateFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-6px,0)}}
+.cplate::before{content:"";position:absolute;inset:-40% -55%;z-index:-1;
+  background:radial-gradient(50% 50% at 50% 50%,rgba(47,178,204,.18),transparent 70%)}
+.pl-art{position:absolute;inset:0;width:100%;height:100%;opacity:1}
+.pl-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  filter:none}
+.pl-tint{position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:soft-light;opacity:var(--tint,.5);
+  background:linear-gradient(172deg,#2A79BF 0%,#114278 52%,#081D36 100%)}
+.pl-tint::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,22,42,.5) 0%,rgba(8,22,42,0) 18%,rgba(8,22,42,0) 74%,rgba(4,12,24,.62) 100%)}
+.cplate.has-photo .pl-art{display:none}
+.cplate.has-photo{
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 64%,rgba(0,0,0,.42) 86%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 64%,rgba(0,0,0,.42) 86%,transparent 100%)}
+.pl-art path{stroke-width:1.1}
+.pl-art path{stroke:var(--ac)}
+.pl-mast{position:absolute;z-index:2;top:7.5%;left:9%;right:9%;display:flex;justify-content:space-between;
+  align-items:flex-start;gap:8px;font-size:9px;letter-spacing:.13em;color:#E9F3FE;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.55)}
+.pl-mast b{font-weight:600;line-height:1.5;letter-spacing:.11em;max-width:60%}
+.pl-mast i{font-style:normal;opacity:.62;letter-spacing:.1em;white-space:nowrap}
+.pl-foot{position:absolute;z-index:2;bottom:7%;left:9%;right:9%;display:flex;justify-content:space-between;
+  font-size:8px;letter-spacing:.18em;color:#A9C4E0;text-transform:uppercase;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.pl-foot em{font-style:normal}
+.pl-glass{position:absolute;z-index:1;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(6,18,36,.96) 0%,rgba(6,18,36,.5) 24%,transparent 54%)}
+@media (prefers-reduced-motion:reduce){.cplate{animation:none}}
+.hint{font-size:clamp(12px,.9vw,33px);letter-spacing:.14em;color:#5E7897;margin-top:clamp(14px,2.2vh,22px)}
+.hint b{color:#94B9E2;font-weight:500}
+
+.cmain{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.cfoot{margin-top:auto;padding-top:clamp(12px,1.8vh,18px);border-top:1px solid rgba(232,241,251,.12);
+  font-size:clamp(10px,.78vw,29px);letter-spacing:.2em;color:rgba(150,186,226,.5);text-transform:uppercase}
+
+/* ---------- overview ---------- */
+.ov-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px}
+.ov-head h2{font-size:clamp(15px,1.3vw,48px);font-weight:600}
+.ov-head span{font-size:clamp(9.5px,.76vw,28px);letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.ov{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(40px,5vw,100px);
+  grid-auto-rows:min-content;align-content:space-evenly;row-gap:clamp(8px,1.4vh,16px);
+  flex:1;min-height:0;margin-top:0}
+.row{display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:baseline;min-width:0;
+  border-bottom:1px solid var(--line2);padding:0 2px clamp(10px,1.6vh,18px)}
+.row i{font-style:normal;font-size:clamp(12px,.94vw,35px);color:var(--azure);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.row p{font-size:clamp(16px,1.5vw,56px);line-height:1.4;color:var(--ink);text-wrap:balance}
+.rt{min-width:0}
+.rt em{font-style:normal;display:block;margin-top:7px;font-size:clamp(11px,.9vw,34px);line-height:1.5;color:var(--mute);letter-spacing:.01em}
+.ov.c1 .row p{font-size:clamp(14.5px,1.18vw,20px)}
+.ov.c1 .rt em{font-size:clamp(10.5px,.74vw,12px);margin-top:5px}
+.ov.c1 .row{padding-bottom:clamp(7px,1.1vh,12px)}
+.ov.c2 .row p{font-size:clamp(13.5px,1.06vw,18px)}
+.ov.c2 .rt em{font-size:clamp(10px,.7vw,11.5px);margin-top:4px}
+.ov.c2 .row{padding-bottom:clamp(5px,.9vh,9px)}
+.row s{text-decoration:none;color:var(--mute);font-size:clamp(10.5px,.9vw,33px);letter-spacing:.1em;white-space:nowrap}
+
+.refhead{font-size:clamp(20px,1.62vw,30px);font-weight:600;letter-spacing:-.01em;
+  margin:clamp(10px,1.9vh,20px) 0 clamp(10px,2vh,22px)}
+.reflist{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(40px,4.6vw,88px);
+  align-content:start;flex:1;min-height:0}
+.ref{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:clamp(6px,1.05vh,12px) 0;
+  border-top:1px solid var(--line2)}
+.ref b{font-size:clamp(11px,.8vw,13px);color:var(--azure);font-weight:600;padding-top:2px}
+.ref p{font-size:clamp(13px,1.06vw,17px);line-height:1.72;color:var(--ink2);text-wrap:pretty}
+.ref a{display:inline-block;margin-top:5px;font-size:clamp(11px,.82vw,13px);
+  color:var(--azure);text-decoration:none;letter-spacing:.02em}
+.ref a:hover{text-decoration:underline}
+.refs .wrap{padding-bottom:clamp(18px,3vh,34px)}
+
+/* ---------- closing ---------- */
+h2.big{font-size:clamp(26px,2.7vw,100px);font-weight:600;letter-spacing:-.015em;line-height:1.3}
+.cl{margin-top:clamp(14px,2.6vh,32px);display:grid;gap:clamp(10px,1.8vh,20px);max-width:1180px}
+.cl li{list-style:none;display:grid;grid-template-columns:40px 1fr;gap:16px;border-top:1px solid rgba(232,241,251,.16);padding-top:clamp(9px,1.5vh,16px)}
+.cl i{font-style:normal;font-size:11px;color:#5FA8EE;letter-spacing:.14em;padding-top:4px}
+.cl p{font-size:clamp(15px,1.12vw,42px);line-height:1.85;color:#BCCFE7;max-width:76ch;text-wrap:pretty}
+
+/* ---------- nav ---------- */
+.dots[hidden]{display:none!important}
+.dots{position:fixed;right:15px;top:50%;transform:translateY(-50%);display:grid;gap:6px;z-index:20}
+.dots a{width:5px;height:5px;border-radius:50%;background:rgba(11,27,51,.19);transition:.32s;cursor:pointer}
+.dots a.on{background:var(--azure);height:18px;border-radius:2.5px}
+.dots a{position:relative}
+.dots a::before{content:attr(data-t);position:absolute;right:calc(100% + 11px);top:50%;
+  transform:translate(9px,-50%);opacity:0;pointer-events:none;
+  white-space:normal;width:max-content;max-width:min(58vw,520px);text-align:left;
+  font-size:13px;line-height:1.64;letter-spacing:.01em;padding:10px 15px;border-radius:10px;
+  background:#fff;color:var(--ink);border:1px solid rgba(11,27,51,.09);
+  box-shadow:0 8px 26px rgba(9,32,66,.14);
+  transition:opacity .18s ease,transform .34s cubic-bezier(.2,.86,.3,1)}
+.dots a::after{content:"";position:absolute;right:calc(100% + 11px);top:50%;width:7px;height:7px;
+  transform:translate(0,-50%) rotate(45deg);opacity:0;background:#fff;
+  border-right:1px solid rgba(11,27,51,.09);border-top:1px solid rgba(11,27,51,.09);
+  transition:opacity .18s ease}
+.dots a:hover::before,.dots a:focus-visible::before{opacity:1;transform:translate(0,-50%);transition-delay:.07s}
+.dots a:hover::after,.dots a:focus-visible::after{opacity:1}
+.dots a:hover{transform:scale(1.55);transition:transform .26s cubic-bezier(.2,.86,.3,1)}
+.dots a.on:hover{transform:scale(1.02)}
+.dots:hover a:not(:hover){opacity:.5}
+body.on-dark .dots{opacity:0;pointer-events:none}
+.dots{transition:opacity .4s}
+.prog{position:fixed;left:0;top:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,#43C0D6,#0F62D6);z-index:30}
+.pg{position:fixed;right:26px;bottom:16px;font-size:10px;letter-spacing:.14em;color:var(--mute);z-index:20;font-variant-numeric:tabular-nums}
+body.on-dark .pg{color:#6D87A6}
+
+@media (max-width:900px){
+  .pgrid{grid-template-columns:1fr}
+  .col-r{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:20px}
+  .ov{grid-template-columns:1fr}
+  .dots{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{transition:none;opacity:1;transform:none}
+  .stream{animation:none}
+  .glow{animation:none}
+}
+</style>
+</head>
+<body>
+<!--
+  ┌──────────────────────────────────────────────────────────────────────┐
+  │  组会论文汇报 · HTML 演示稿模板                                       │
+  │  改这里：1) 每页的文字  2) .dots 里的 data-t  3) .pg 与 --p 的页码    │
+  │  页面类型：封面 / 目录 / 论文页（复制多份）/ 三点观察 / 参考文献       │
+  │  第二个 deck（如"另一本期刊"）见 SKILL.md 的「多 deck」一节          │
+  └──────────────────────────────────────────────────────────────────────┘
+-->
+<div class="prog"></div>
+<div class="pg">01 / 06</div>
+<nav class="dots" data-k="main">
+  <a href="#" data-t="封面" aria-label="封面" onclick="event.preventDefault()"></a>
+  <a href="#" data-t="本期选读" aria-label="本期选读" onclick="event.preventDefault()"></a>
+  <a href="#" data-t="示例论文一" aria-label="示例论文一" onclick="event.preventDefault()"></a>
+  <a href="#" data-t="示例论文二" aria-label="示例论文二" onclick="event.preventDefault()"></a>
+  <a href="#" data-t="三点观察" aria-label="三点观察" onclick="event.preventDefault()"></a>
+  <a href="#" data-t="参考文献" aria-label="参考文献" onclick="event.preventDefault()"></a>
+</nav>
+
+<div class="deck" data-k="main">
+
+<!-- ① 封面 ------------------------------------------------------------- -->
+<!-- 深色页。cplate 想放期刊封面图时：加 class="cplate has-photo"，里面放
+     <img class="pl-photo" alt="" src="data:image/jpeg;base64,...">（宽 720px 左右即可） -->
+<section class="slide dark" style="--p:0%">
+  <div class="glow"></div>
+  <div class="cover-art"><svg viewBox="0 0 1600 900" preserveAspectRatio="none"><path class="stream" d="M0 32 L53 37 L107 41 L160 44 L213 46 L267 47 L320 47 L373 46 L427 44 L480 42 L533 41 L587 39 L640 38 L693 38 L747 37 L800 36 L853 35 L907 33 L960 30 L1013 27 L1067 23 L1120 20 L1173 17 L1227 15 L1280 14 L1333 15 L1387 16 L1440 19 L1493 23 L1547 27 L1600 31" style="opacity:0.23;animation-delay:0.0s"/>
+<path class="stream" d="M0 132 L53 132 L107 129 L160 125 L213 120 L267 114 L320 109 L373 105 L427 102 L480 100 L533 98 L587 96 L640 93 L693 89 L747 84 L800 78 L853 71 L907 66 L960 61 L1013 59 L1067 60 L1120 63 L1173 69 L1227 78 L1280 87 L1333 96 L1387 105 L1440 112 L1493 117 L1547 120 L1600 121" style="opacity:0.35;animation-delay:-1.7s"/>
+<path class="stream" d="M0 187 L53 177 L107 168 L160 161 L213 156 L267 153 L320 150 L373 147 L427 143 L480 138 L533 132 L587 124 L640 117 L693 111 L747 108 L800 108 L853 113 L907 121 L960 133 L1013 147 L1067 163 L1120 177 L1173 189 L1227 199 L1280 204 L1333 206 L1387 205 L1440 202 L1493 197 L1547 193 L1600 190" style="opacity:0.40;animation-delay:-3.4s"/>
+<path class="stream" d="M0 201 L53 197 L107 195 L160 192 L213 189 L267 185 L320 179 L373 172 L427 166 L480 163 L533 162 L587 167 L640 177 L693 191 L747 209 L800 230 L853 250 L907 268 L960 282 L1013 291 L1067 295 L1120 293 L1173 287 L1227 279 L1280 270 L1333 261 L1387 254 L1440 248 L1493 244 L1547 241 L1600 237" style="opacity:0.16;animation-delay:-5.1s"/>
+<path class="stream" d="M0 280 L53 279 L107 279 L160 278 L213 278 L267 278 L320 278 L373 280 L427 283 L480 287 L533 291 L587 295 L640 300 L693 303 L747 305 L800 306 L853 306 L907 305 L960 303 L1013 300 L1067 297 L1120 294 L1173 292 L1227 291 L1280 290 L1333 289 L1387 288 L1440 286 L1493 285 L1547 283 L1600 280" style="opacity:0.44;animation-delay:-6.8s"/>
+<path class="stream" d="M0 334 L53 336 L107 339 L160 343 L213 350 L267 358 L320 367 L373 376 L427 384 L480 389 L533 392 L587 392 L640 389 L693 384 L747 377 L800 369 L853 362 L907 356 L960 351 L1013 348 L1067 345 L1120 344 L1173 342 L1227 340 L1280 337 L1333 334 L1387 330 L1440 326 L1493 322 L1547 321 L1600 321" style="opacity:0.26;animation-delay:-8.5s"/>
+<path class="stream" d="M0 428 L53 440 L107 452 L160 463 L213 472 L267 477 L320 477 L373 473 L427 465 L480 454 L533 442 L587 428 L640 417 L693 407 L747 400 L800 395 L853 393 L907 391 L960 391 L1013 389 L1067 387 L1120 384 L1173 380 L1227 376 L1280 374 L1333 375 L1387 378 L1440 386 L1493 396 L1547 410 L1600 425" style="opacity:0.34;animation-delay:-10.2s"/>
+<path class="stream" d="M0 558 L53 560 L107 556 L160 546 L213 531 L267 513 L320 494 L373 475 L427 459 L480 447 L533 439 L587 435 L640 435 L693 436 L747 438 L800 439 L853 439 L907 437 L960 436 L1013 434 L1067 435 L1120 439 L1173 447 L1227 459 L1280 475 L1333 494 L1387 513 L1440 531 L1493 546 L1547 556 L1600 560" style="opacity:0.41;animation-delay:-11.9s"/>
+<path class="stream" d="M0 553 L53 549 L107 544 L160 540 L213 537 L267 534 L320 533 L373 533 L427 534 L480 535 L533 536 L587 537 L640 538 L693 538 L747 538 L800 539 L853 539 L907 541 L960 543 L1013 546 L1067 550 L1120 554 L1173 558 L1227 561 L1280 563 L1333 565 L1387 564 L1440 563 L1493 560 L1547 557 L1600 553" style="opacity:0.14;animation-delay:-13.6s"/>
+<path class="stream" d="M0 581 L53 578 L107 578 L160 580 L213 583 L267 587 L320 591 L373 594 L427 597 L480 599 L533 601 L587 602 L640 605 L693 608 L747 613 L800 619 L853 627 L907 634 L960 641 L1013 646 L1067 649 L1120 649 L1173 646 L1227 641 L1280 633 L1333 624 L1387 615 L1440 607 L1493 601 L1547 596 L1600 593" style="opacity:0.43;animation-delay:-15.3s"/>
+<path class="stream" d="M0 636 L53 645 L107 653 L160 660 L213 666 L267 670 L320 673 L373 676 L427 680 L480 685 L533 692 L587 700 L640 710 L693 719 L747 726 L800 731 L853 731 L907 728 L960 720 L1013 709 L1067 695 L1120 680 L1173 666 L1227 654 L1280 645 L1333 639 L1387 637 L1440 637 L1493 638 L1547 640 L1600 642" style="opacity:0.28;animation-delay:-17.0s"/>
+<path class="stream" d="M0 745 L53 751 L107 755 L160 758 L213 762 L267 768 L320 775 L373 784 L427 794 L480 802 L533 808 L587 809 L640 806 L693 797 L747 782 L800 764 L853 744 L907 724 L960 706 L1013 691 L1067 681 L1120 677 L1173 677 L1227 681 L1280 687 L1333 693 L1387 699 L1440 703 L1493 706 L1547 708 L1600 711" style="opacity:0.32;animation-delay:-18.7s"/>
+<path class="stream" d="M0 812 L53 812 L107 813 L160 815 L213 816 L267 817 L320 817 L373 817 L427 815 L480 812 L533 809 L587 804 L640 799 L693 795 L747 792 L800 789 L853 788 L907 788 L960 789 L1013 790 L1067 793 L1120 795 L1173 797 L1227 798 L1280 799 L1333 800 L1387 801 L1440 802 L1493 804 L1547 806 L1600 809" style="opacity:0.42;animation-delay:-20.4s"/>
+<path class="stream" d="M0 892 L53 892 L107 891 L160 888 L213 883 L267 876 L320 868 L373 858 L427 849 L480 841 L533 835 L587 831 L640 831 L693 833 L747 837 L800 843 L853 849 L907 855 L960 860 L1013 864 L1067 867 L1120 870 L1173 871 L1227 874 L1280 877 L1333 881 L1387 886 L1440 891 L1493 896 L1547 901 L1600 903" style="opacity:0.11;animation-delay:-22.1s"/></svg></div>
+  <div class="wrap">
+    <div class="cgrid">
+      <div class="cbody">
+        <div class="kicker rv" style="--i:0">组会文献速递 · GROUP MEETING DIGEST</div>
+        <h1 class="rv" style="--i:1">Journal Name</h1>
+        <div class="csub rv" style="--i:2">本期主题 · 十篇选读</div>
+        <div class="jmeta rv" style="--i:2">Publisher　·　ISSN 0000-0000　·　Volume 00　·　2026</div>
+        <p class="about rv" style="--i:3">一句话说明这本期刊的范围：选题集中在哪些方向，多数工作用什么证据支撑结论（现场数据、试验台、整机仿真）。这段文字控制在 3 行以内。</p>
+      </div>
+      <div class="cside rv" style="--i:3">
+        <figure class="cplate" style="--ac:#8FD3E8;--tint:.55">
+          <svg class="pl-art" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden="true">
+            <path class="stream" d="M-20 300 C 60 250, 120 340, 200 280 S 300 220, 330 250" style="opacity:.55"/>
+            <path class="stream" d="M-20 342 C 70 300, 130 380, 210 330 S 300 280, 330 300" style="opacity:.4;animation-delay:-6s"/>
+            <path class="stream" d="M-20 258 C 50 220, 120 292, 190 238 S 290 190, 330 210" style="opacity:.3;animation-delay:-12s"/>
+          </svg>
+          <div class="pl-tint"></div>
+          <div class="pl-glass"></div>
+          <div class="pl-mast"><b>JOURNAL NAME</b><i>2026 · 00</i></div>
+          <div class="pl-foot"><span>Publisher</span><em>example.com</em></div>
+        </figure>
+        <p class="pl-cap">Publisher　·　Vol. 00　·　2026</p>
+      </div>
+    </div>
+    <div class="hint rv" style="--i:5"><b>↓ / →</b> 翻页　　<b>F</b> 全屏</div>
+  </div>
+</section>
+
+<!-- ② 目录 ------------------------------------------------------------- -->
+<!-- 每行：序号 / 中文标题 + 英文标题 / 右上角主题标签。<s> 太宽时会被截断。 -->
+<section class="slide" style="--p:20%">
+  <div class="rail"></div>
+  <div class="wrap">
+    <div class="runhead rv" style="--i:0"><span>JOURNAL NAME · VOL. 00 · 2026 · 十篇</span><span>CONTENTS</span></div>
+    <div class="ov">
+      <div class="row rv" style="--i:1"><i>01</i><div class="rt"><p>示例论文一的标题：把研究问题写成一句话</p><em>Example Paper One: A Title That States the Question</em></div><s>主题标签</s></div>
+      <div class="row rv" style="--i:2"><i>02</i><div class="rt"><p>示例论文二的标题：方法与场景都写进去</p><em>Example Paper Two: Method and Setting</em></div><s>主题标签</s></div>
+      <div class="row rv" style="--i:3"><i>03</i><div class="rt"><p>复制上面的 row 增加一行，序号与 .dots 同步</p><em>Duplicate the row above to add an entry</em></div><s>标签</s></div>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 论文页 ----------------------------------------------------------- -->
+<!-- 左栏：主题 chip / 序号 / 中英标题 / 作者出处 / 关键词 / 推荐理由
+     右栏：摘要（自动缩放到填满版心）/ DOI
+     一页一篇；复制整段 <section> 增加，改 .num 的 01/10 与 .runhead 的 SELECTED · 01 -->
+<section class="slide paper" style="--p:40%">
+  <div class="rail"></div>
+  <div class="wrap">
+    <div class="runhead rv" style="--i:0">
+      <span>JOURNAL NAME · VOL. 00 · 2026</span><span>SELECTED · 01</span>
+    </div>
+    <div class="pgrid">
+      <div class="col-l">
+        <span class="topic rv" style="--i:0">主题标签</span>
+        <div class="num rv" style="--i:0"><b>01</b><span>/10</span></div>
+        <h3 class="zh rv" style="--i:1">示例论文一的标题：把研究问题写成一句话</h3>
+        <p class="en rv" style="--i:1">Example Paper One: A Title That States the Question</p>
+        <div class="au rv" style="--i:2"><b>Author A, Author B, Author C</b><br>Journal Name, 2026, 00(0): e00000</div>
+        <div class="klabel rv" style="--i:2">关键词 · Keywords</div>
+        <div class="kws rv" style="--i:3"><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span></div>
+        <div class="note rv" style="--i:4"><em>推荐理由</em>为什么把它放进这一期：方法上的新意、结论的适用边界、和同组其它工作的关系。两到三行，读完能判断"要不要细看"。</div>
+      </div>
+      <div class="col-r">
+        <div class="lbl rv" style="--i:0">摘要 · Abstract</div>
+        <div class="abswrap"><p class="abs rv" style="--i:1">这一段是论文摘要的中文转述，建议写 200–450 字：先交代背景与问题，再说明方法与数据来源，最后给出结论及其适用边界。右栏会自动二分查找字号（19–28px），让整段刚好填满版心，所以不必手动调；若压到最小字号仍然溢出，说明该删句子了。转述时尽量保留原文的数字与限定条件，别只写“效果好”。</p></div>
+        <div class="doi rv" style="--i:2">DOI · 10.0000/example.00000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④ 论文页（第二篇） ------------------------------------------------ -->
+<section class="slide paper" style="--p:60%">
+  <div class="rail"></div>
+  <div class="wrap">
+    <div class="runhead rv" style="--i:0">
+      <span>JOURNAL NAME · VOL. 00 · 2026</span><span>SELECTED · 02</span>
+    </div>
+    <div class="pgrid">
+      <div class="col-l">
+        <span class="topic rv" style="--i:0">主题标签</span>
+        <div class="num rv" style="--i:0"><b>02</b><span>/10</span></div>
+        <h3 class="zh rv" style="--i:1">示例论文二的标题：方法与场景都写进去</h3>
+        <p class="en rv" style="--i:1">Example Paper Two: Method and Setting</p>
+        <div class="au rv" style="--i:2"><b>Author D, Author E</b><br>Journal Name, 2026, 00(1): e00001</div>
+        <div class="klabel rv" style="--i:2">关键词 · Keywords</div>
+        <div class="kws rv" style="--i:3"><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span></div>
+        <div class="note rv" style="--i:4"><em>推荐理由</em>和第二篇一样，写清"为什么值得看"，不要复述摘要。</div>
+      </div>
+      <div class="col-r">
+        <div class="lbl rv" style="--i:0">摘要 · Abstract</div>
+        <div class="abswrap"><p class="abs rv" style="--i:1">第二篇的摘要转述写在这块。写作时把三件事说清楚就够了：做了什么、用了什么数据、得到什么结论。同一份模板里每页的摘要长度可以不同，右栏会各自按可用高度定字号，短摘要被放大、长摘要被缩小，最终视觉上每页都刚好填满，不必手工对齐。</p></div>
+        <div class="doi rv" style="--i:2">DOI · 10.0000/example.00001</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 三点观察 --------------------------------------------------------- -->
+<!-- 深色页。三条 <li>，序号 01/02/03 用 <i> 包住；cfoot 是底部那行出处。
+     正文建议每条 40–70 字，超过三行会挤。 -->
+<section class="slide dark" style="--p:80%">
+  <div class="glow"></div>
+  <div class="rail"></div>
+  <div class="wrap">
+    <div class="cmain">
+      <div class="kicker rv" style="--i:0">SUMMARY</div>
+      <h2 class="big rv" style="--i:1">三点观察</h2>
+      <ul class="cl"><li class="rv" style="--i:1"><i>01</i><p>第一条：把十篇里反复出现的方法论共识写成一句判断，后面用一两个数字或条件限住它。</p></li><li class="rv" style="--i:2"><i>02</i><p>第二条：指出这些工作共同的盲区或瓶颈，最好带上具体的量级。</p></li><li class="rv" style="--i:3"><i>03</i><p>第三条：给出对组里下一步有用的结论——哪些接口缺位、哪条路线值得先试。</p></li></ul>
+    </div>
+    <div class="cfoot rv" style="--i:4">Journal Name　·　Volume 00　·　本期主题 · 十篇选读</div>
+  </div>
+</section>
+
+<!-- ⑥ 参考文献 --------------------------------------------------------- -->
+<!-- 两列自动流式排布。每条：序号 / 完整引用 / 可点的 DOI 链接。 -->
+<section class="slide refs" style="--p:100%">
+  <div class="rail"></div>
+  <div class="wrap">
+    <div class="runhead rv" style="--i:0"><span>JOURNAL NAME · VOL. 00 · 2026 · 参考文献</span><span>REFERENCES · 10</span></div>
+    <h2 class="refhead rv" style="--i:1">参考文献</h2>
+    <div class="reflist"><div class="ref rv" style="--i:1"><b>01</b><div><p>Author A, Author B. Example paper one title[J]. Journal Name, 2026, 00(0): e00000.</p><a href="https://doi.org/10.0000/example.00000" target="_blank" rel="noopener">10.0000/example.00000</a></div></div><div class="ref rv" style="--i:2"><b>02</b><div><p>Author D, Author E. Example paper two title[J]. Journal Name, 2026, 00(1): e00001.</p><a href="https://doi.org/10.0000/example.00001" target="_blank" rel="noopener">10.0000/example.00001</a></div></div><div class="ref rv" style="--i:2"><b>03</b><div><p>复制上面的 .ref 增加一条，序号手改。</p><a href="https://doi.org/10.0000/example.00002" target="_blank" rel="noopener">10.0000/example.00002</a></div></div></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+const decks=[...document.querySelectorAll('.deck')];
+let deck=decks.find(d=>!d.hidden)||decks[0];
+let slides=[...deck.querySelectorAll('.slide')];
+let n=slides.length;
+let dots=[...document.querySelectorAll('.dots[data-k="'+deck.dataset.k+'"] a')];
+const prog=document.querySelector('.prog');
+const reduceMotion=matchMedia('(prefers-reduced-motion:reduce)').matches;
+let progTarget=0,progNow=0,progRaf=0;
+function progTo(v){
+  progTarget=v;
+  if(reduceMotion){progNow=v;prog.style.transform='scaleX('+v+')';return}
+  if(!progRaf) progRaf=requestAnimationFrame(progStep);
+}
+function progStep(){
+  progNow+=(progTarget-progNow)*.18;
+  const done=Math.abs(progTarget-progNow)<.0012;
+  if(done) progNow=progTarget;
+  prog.style.transform='scaleX('+progNow.toFixed(4)+')';
+  progRaf=done?0:requestAnimationFrame(progStep);
+}
+const pgn=document.querySelector('.pg');
+const pos={};
+let switching=false;
+function switchDeck(k){
+  if(switching||deck.dataset.k===k) return;
+  switching=true;
+  const from=deck, cur=idxOf(), outSlide=slides[cur];
+  pos[from.dataset.k]=cur;
+  outSlide.classList.add('sw-out');
+  setTimeout(()=>{switching=false},1180);
+  setTimeout(()=>{
+    outSlide.classList.remove('sw-out');
+    decks.forEach(d=>{d.hidden=d.dataset.k!==k});
+    document.querySelectorAll('.dots').forEach(nv=>{nv.hidden=nv.dataset.k!==k});
+    deck=decks.find(d=>d.dataset.k===k);
+    slides=[...deck.querySelectorAll('.slide')];
+    n=slides.length;
+    dots=[...document.querySelectorAll('.dots[data-k="'+k+'"] a')];
+    document.querySelectorAll('.jsw button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+    const target=Math.max(0,Math.min(n-1,pos[k]==null?cur:pos[k]));
+    pos[k]=target;
+    const root=document.documentElement, prevSB=root.style.scrollBehavior;
+    root.style.scrollBehavior='auto';
+    window.scrollTo({top:target*window.innerHeight,behavior:'instant'});
+    root.style.scrollBehavior=prevSB;
+    deck.classList.add('noanim');
+    requestAnimationFrame(()=>{
+      try{fitAbs();fitLeft();sync();}catch(err){}
+      requestAnimationFrame(()=>deck.classList.remove('noanim'));
+      const inSlide=slides[target];
+      inSlide.classList.add('sw-in');
+      setTimeout(()=>inSlide.classList.remove('sw-in'),580);
+    });
+  },300);
+}
+function fitAbs(){
+  document.querySelectorAll('.slide.paper').forEach(s=>{
+    const box=s.querySelector('.abswrap'), p=s.querySelector('.abs');
+    if(!box||!p) return;
+    const cs=getComputedStyle(box);
+    const avail=box.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-4;
+    let lo=19, hi=28, best=19;
+    for(let k=0;k<18;k++){
+      const mid=(lo+hi)/2;
+      p.style.fontSize=mid+'px';
+      p.style.lineHeight=(mid>=25?1.72:mid>=21?1.84:1.95);
+      if(p.scrollHeight<=avail){best=mid;lo=mid}else{hi=mid}
+    }
+    p.style.fontSize=best.toFixed(1)+'px';
+    p.style.lineHeight=(best>=25?1.72:best>=21?1.84:1.95);
+    if(p.scrollHeight>avail*1.02){p.style.fontSize='17px';p.style.lineHeight='1.9';}
+  });
+}
+function idxOf(){return Math.max(0,Math.min(n-1,Math.round(window.scrollY/window.innerHeight)))}
+function sync(){
+  const cur=idxOf();
+  pos[deck.dataset.k]=cur;
+  slides.forEach((s,i)=>s.classList.toggle('in',i<=cur));
+  dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.body.classList.toggle('on-dark',slides[cur].classList.contains('dark'));
+  progTo(Math.min(1,(window.scrollY+window.innerHeight)/document.body.scrollHeight));
+  if(pgn) pgn.textContent=String(cur+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');
+  if(slides[cur].classList.contains('paper')) fitOne(slides[cur]);
+  fitOv(slides[cur]);
+}
+function go(i){i=Math.max(0,Math.min(n-1,i));slides[i].scrollIntoView({behavior:'smooth',block:'start'})}
+let t=null;
+addEventListener('scroll',()=>{if(t)clearTimeout(t);t=setTimeout(sync,60)},{passive:true});
+
+let wlock=false, wacc=0;
+addEventListener('wheel',e=>{
+  if(e.ctrlKey) return;
+  e.preventDefault();
+  if(wlock) return;
+  wacc+=e.deltaY;
+  if(Math.abs(wacc)>24){
+    const dir=wacc>0?1:-1; wacc=0; wlock=true;
+    go(idxOf()+dir);
+    setTimeout(()=>{wlock=false},620);
+  }
+},{passive:false});
+function fitOne(s){
+  const c=s.querySelector('.col-l'); if(!c||!c.firstElementChild) return;
+  c.classList.remove('c1','c2');
+  const need=()=>{
+    const a=c.firstElementChild.offsetTop;
+    let m=a;
+    [...c.children].forEach(e=>{const b=e.offsetTop+e.offsetHeight; if(b>m) m=b;});
+    return m-a;
+  };
+  if(need()>c.clientHeight+1) c.classList.add('c1');
+  if(need()>c.clientHeight+1) c.classList.add('c2');
+}
+function fitOv(s){
+  const o=s.querySelector('.ov'); if(!o) return;
+  o.classList.remove('c1','c2');
+  if(o.scrollHeight>o.clientHeight+1) o.classList.add('c1');
+  if(o.scrollHeight>o.clientHeight+1) o.classList.add('c2');
+}
+function fitLeft(){
+  document.querySelectorAll('.slide').forEach(s=>fitOv(s));
+  document.querySelectorAll('.slide.paper').forEach(s=>{
+    const c=s.querySelector('.col-l'); if(!c||!c.firstElementChild) return;
+    c.classList.remove('c1','c2');
+    const need=()=>{
+      const a=c.firstElementChild.getBoundingClientRect().top;
+      let m=a;
+      [...c.children].forEach(e=>{const r=e.getBoundingClientRect(); if(r.bottom>m) m=r.bottom;});
+      return m-a;
+    };
+    if(need()>c.clientHeight+1) c.classList.add('c1');
+    if(need()>c.clientHeight+1) c.classList.add('c2');
+  });
+}
+addEventListener('resize',()=>{fitAbs();fitLeft();sync()});
+addEventListener('load',()=>{fitAbs();fitLeft()});
+setTimeout(()=>{fitAbs();fitLeft()},260);
+setTimeout(()=>{fitAbs();fitLeft()},900);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{fitAbs();fitLeft()});
+addEventListener('keydown',e=>{
+  const cur=idxOf();
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(cur+1)}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}
+  else if(e.key==='Home'){e.preventDefault();go(0)}
+  else if(e.key==='End'){e.preventDefault();go(n-1)}
+  else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+});
+document.querySelectorAll('.dots').forEach(nav=>{
+  nav.addEventListener('click',e=>{
+    const a=e.target.closest('a'); if(!a) return;
+    e.preventDefault();
+    const i=[...nav.children].indexOf(a);
+    if(i>=0) go(i);
+  });
+});
+const jsw=document.querySelector('.jsw');
+const ind=jsw?document.createElement('span'):null;
+if(ind){
+  ind.className='ind';
+  jsw.appendChild(ind);
+  const place=(btn,anim)=>{
+    if(!btn) return;
+    jsw.classList.toggle('noanim',!anim);
+    ind.style.width=btn.offsetWidth+'px';
+    ind.style.transform='translateX('+(btn.offsetLeft-3)+'px)';
+    if(!anim) requestAnimationFrame(()=>jsw.classList.remove('noanim'));
+  };
+  place(jsw.querySelector('button.on'),false);
+  addEventListener('resize',()=>place(jsw.querySelector('button.on'),false));
+  jsw.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.classList.contains('on')) return;
+    place(b,true);
+    jsw.classList.remove('pulse');
+    void jsw.offsetWidth;
+    jsw.classList.add('pulse');
+    switchDeck(b.dataset.k);
+  }));
+}
+addEventListener('load',()=>{fitAbs();const h=parseInt(location.hash.replace('#',''));if(h)go(h-1);sync()});
+fitAbs();sync();
+</script>
+</body>
+</html>
