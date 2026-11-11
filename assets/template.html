@@ -111,6 +111,10 @@ body.on-dark .jsw button.on{color:#EAF3FD}
 .abs{font-size:20px;line-height:1.95;color:#1E3049;text-align:justify;text-justify:inter-ideograph;letter-spacing:.004em}
 .doi{margin-top:auto;padding-top:10px;border-top:1px solid var(--line2);font-size:clamp(11.5px,.9vw,33px);letter-spacing:.06em;color:var(--mute);
   font-variant-numeric:tabular-nums;word-break:break-all}
+.aff{margin-top:10px;padding-top:9px;border-top:1px solid var(--line2);
+  font-size:clamp(10.5px,.78vw,30px);line-height:1.62;color:var(--mute);letter-spacing:.01em}
+.aff i{font-style:normal;color:var(--azure);font-weight:600;margin-right:5px;letter-spacing:.12em}
+.aff b{font-weight:500;color:var(--ink2)}
 
 /* ---------- reveal ---------- */
 .rv{opacity:0;transform:translate3d(0,18px,0);
@@ -382,7 +386,7 @@ body.on-dark .pg{color:#6D87A6}
         <div class="num rv" style="--i:0"><b>01</b><span>/10</span></div>
         <h3 class="zh rv" style="--i:1">示例论文一的标题：把研究问题写成一句话</h3>
         <p class="en rv" style="--i:1">Example Paper One: A Title That States the Question</p>
-        <div class="au rv" style="--i:2"><b>Author A, Author B, Author C</b><br>Journal Name, 2026, 00(0): e00000</div>
+        <div class="au rv" style="--i:2"><b>Zhang Wei（张伟）, Li Ming（李明）, J. Smith</b><br>Journal Name, 2026, 00(0): e00000</div>
         <div class="klabel rv" style="--i:2">关键词 · Keywords</div>
         <div class="kws rv" style="--i:3"><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span></div>
         <div class="note rv" style="--i:4"><em>推荐理由</em>为什么把它放进这一期：方法上的新意、结论的适用边界、和同组其它工作的关系。两到三行，读完能判断"要不要细看"。</div>
@@ -391,6 +395,7 @@ body.on-dark .pg{color:#6D87A6}
         <div class="lbl rv" style="--i:0">摘要 · Abstract</div>
         <div class="abswrap"><p class="abs rv" style="--i:1">这一段是论文摘要的中文转述，建议写 200–450 字：先交代背景与问题，再说明方法与数据来源，最后给出结论及其适用边界。右栏会自动二分查找字号（19–28px），让整段刚好填满版心，所以不必手动调；若压到最小字号仍然溢出，说明该删句子了。转述时尽量保留原文的数字与限定条件，别只写“效果好”。</p></div>
         <div class="doi rv" style="--i:2">DOI · 10.0000/example.00000</div>
+        <div class="aff rv" style="--i:3"><i>机构</i>示例大学（Example University）；中国科学院（Chinese Academy of Sciences）</div>
       </div>
     </div>
   </div>
@@ -409,7 +414,7 @@ body.on-dark .pg{color:#6D87A6}
         <div class="num rv" style="--i:0"><b>02</b><span>/10</span></div>
         <h3 class="zh rv" style="--i:1">示例论文二的标题：方法与场景都写进去</h3>
         <p class="en rv" style="--i:1">Example Paper Two: Method and Setting</p>
-        <div class="au rv" style="--i:2"><b>Author D, Author E</b><br>Journal Name, 2026, 00(1): e00001</div>
+        <div class="au rv" style="--i:2"><b>Chen Hao（陈浩）, A. García</b><br>Journal Name, 2026, 00(1): e00001</div>
         <div class="klabel rv" style="--i:2">关键词 · Keywords</div>
         <div class="kws rv" style="--i:3"><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span><span class="kw">中文词<i>english term</i></span></div>
         <div class="note rv" style="--i:4"><em>推荐理由</em>和第二篇一样，写清"为什么值得看"，不要复述摘要。</div>
@@ -418,6 +423,7 @@ body.on-dark .pg{color:#6D87A6}
         <div class="lbl rv" style="--i:0">摘要 · Abstract</div>
         <div class="abswrap"><p class="abs rv" style="--i:1">第二篇的摘要转述写在这块。写作时把三件事说清楚就够了：做了什么、用了什么数据、得到什么结论。同一份模板里每页的摘要长度可以不同，右栏会各自按可用高度定字号，短摘要被放大、长摘要被缩小，最终视觉上每页都刚好填满，不必手工对齐。</p></div>
         <div class="doi rv" style="--i:2">DOI · 10.0000/example.00001</div>
+        <div class="aff rv" style="--i:3"><i>机构</i>示例理工大学（Example Institute of Technology）</div>
       </div>
     </div>
   </div>

@@ -39,6 +39,7 @@ cp assets/template.html 我的汇报.html
 5. **`.abswrap` 必须闭合**：`<div class="abswrap"><p class="abs">…</p></div>` 漏掉 `</div>`，DOI 会被挤进 flex 行里变成竖排窄条。
 6. **图片内联**：封面照用 base64（宽 720px、JPEG q85 足够），保证单文件可拷走。
 7. **减少动态**已内置：`prefers-reduced-motion` 下入场/浮动/换页动画全部关闭，不要另加一套。
+8. **每页必须写作者与机构**（`.au` + `.aff`），这是 2026-11 之后的新要求。机构写成 `中文译名（English original）`，多个用 `；` 分隔；作者保留原文拼写，只在能核实中文名时写成 `Zhang Wei（张伟）`，**绝不音译猜名**。机构拿不到就写 `原文未列明`，不要编。
 
 ## 页面类型速查
 
@@ -52,7 +53,7 @@ cp assets/template.html 我的汇报.html
 <section class="slide refs" style="--p:100%">   <!-- 参考文献：.reflist > .ref -->
 ```
 
-论文页左栏顺序固定：`.topic`（主题胶囊）→ `.num`（01/10）→ `h3.zh` → `p.en` → `.au` → `.klabel` → `.kws` → `.note`（推荐理由）；右栏：`.lbl` → `.abswrap > p.abs` → `.doi`。
+论文页左栏顺序固定：`.topic`（主题胶囊）→ `.num`（01/10）→ `h3.zh` → `p.en` → `.au`（作者 + 期刊卷期）→ `.klabel` → `.kws` → `.note`（推荐理由）；右栏：`.lbl` → `.abswrap > p.abs` → `.doi` → `.aff`（机构，右栏最后一格）。
 
 ## 动效
 

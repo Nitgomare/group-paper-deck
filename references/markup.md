@@ -91,7 +91,7 @@
         <div class="num rv" style="--i:0"><b>01</b><span>/10</span></div>
         <h3 class="zh rv" style="--i:1">中文标题</h3>
         <p class="en rv" style="--i:1">English Title</p>
-        <div class="au rv" style="--i:2"><b>Author A, Author B</b><br>Journal, 2026, 00(0): e00000</div>
+        <div class="au rv" style="--i:2"><b>Zhang Wei（张伟）, Li Ming（李明）, J. Smith</b><br>Journal, 2026, 00(0): e00000</div>
         <div class="klabel rv" style="--i:2">关键词 · Keywords</div>
         <div class="kws rv" style="--i:3">
           <span class="kw">中文词<i>english term</i></span>
@@ -102,6 +102,7 @@
         <div class="lbl rv" style="--i:0">摘要 · Abstract</div>
         <div class="abswrap"><p class="abs rv" style="--i:1">摘要转述 200–450 字。</p></div>
         <div class="doi rv" style="--i:2">DOI · 10.0000/example.00000</div>
+        <div class="aff rv" style="--i:3"><i>机构</i>示例大学（Example University）；中国科学院（Chinese Academy of Sciences）</div>
       </div>
     </div>
   </div>
@@ -114,6 +115,8 @@
 - `.klabel` 有 `margin-top:auto`，关键词会被压到左栏底部，和右栏的 DOI 对齐成一条水平基线——**这是版式的一部分，不要删**。
 - `.note` 左侧那根青色竖线由 `border-left:2px solid var(--cyan)` 给出。
 - `.abs` 由脚本定字号；`.abswrap` 必须闭合。
+- **`.aff` 是机构行，放在 `.doi` 之后、是右栏最后一个元素**。`.doi` 靠 `margin-top:auto` 压到底，`.aff` 跟在它下面，形成"DOI 细线 + 机构"的收尾。格式固定为 `中文译名（English original）`，多个机构用 `；` 分隔，最多 6 个。
+- **作者用原文拼写**，不要音译猜测；只在能核实中文名时用 `Zhang Wei（张伟）` 的写法补注。海外作者不补中文。原文只有首字母缩写（`J. Smith`）就照原样抄。
 - 中文标题超过 2 行会让左栏变挤，超过 3 行基本放不下——控制在 39 字内。
 
 ---
