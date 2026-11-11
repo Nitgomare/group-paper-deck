@@ -507,6 +507,8 @@ function switchDeck(k){
     deck.classList.add('noanim');
     requestAnimationFrame(()=>{
       try{fitAbs();fitLeft();sync();}catch(err){}
+      // 切 deck 的 300ms 过渡结束后再量一次：字体/图片此时才完成布局，只测一次会漏
+      setTimeout(()=>{try{fitAbs();fitLeft();sync();}catch(err){}},420);
       requestAnimationFrame(()=>deck.classList.remove('noanim'));
       const inSlide=slides[target];
       inSlide.classList.add('sw-in');
@@ -638,7 +640,7 @@ if(ind){
     switchDeck(b.dataset.k);
   }));
 }
-addEventListener('load',()=>{fitAbs();const h=parseInt(location.hash.replace('#',''));if(h)go(h-1);sync()});
+addEventListener('load',()=>{fitAbs();const h=parseInt(location.hash.replace('#',''));if(h){const c0=slides.length,oth=decks.find(d=>d.hidden);if(h>c0&&oth){switchDeck(oth.dataset.k);setTimeout(()=>go(h-1-c0),760)}else go(h-1)}sync()});
 fitAbs();sync();
 </script>
 </body>

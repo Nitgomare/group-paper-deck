@@ -55,6 +55,25 @@ cp assets/template.html 我的汇报.html
 
 论文页左栏顺序固定：`.topic`（主题胶囊）→ `.num`（01/10）→ `h3.zh` → `p.en` → `.au`（作者 + 期刊卷期）→ `.klabel` → `.kws` → `.note`（推荐理由）；右栏：`.lbl` → `.abswrap > p.abs` → `.doi` → `.aff`（机构，右栏最后一格）。
 
+## 多 deck（两本期刊 / 两套选读）
+
+一个文件装两套汇报时，用 `.deck` 分容器：
+
+```html
+<div class="deck" data-k="we"> …14 页… </div>
+<div class="deck" data-k="ae" hidden> …14 页… </div>
+<nav class="dots" data-k="we">…</nav>
+<nav class="dots" data-k="ae" hidden>…</nav>
+<div class="jsw"><button data-k="we" class="on">RSER</button><button data-k="ae">APPLIED ENERGY</button></div>
+```
+
+要点：
+
+- **三处同步按 deck 各自算**：`--p` 用 `i/(本 deck 页数-1)*100`，`.pg` 写本 deck 的页数，`.dots` 只放本 deck 的锚点。两个 deck 页数不同也没关系。
+- **切换靠 `switchDeck(k)`**：切隐藏、恢复该 deck 上次停留页、重跑 `fitAbs/fitLeft/sync`；过渡结束后 420ms 再量一次（字体/封面图此时才完成布局）。
+- **摘要字号在隐藏 deck 里量不到**：`display:none` 的 deck 内 `.abswrap` 的 `clientHeight` 是 0，`fitAbs()` 会 `return` 等下一次——所以必须由 `switchDeck` 触发，这不是 bug。
+- **深链跨 deck**：`#1`–`#14` 落在第一个 deck；`#15` 起自动切到第二个 deck 再跳（第 15 页 = 第二套的第 1 页）。加第三个 deck 时页数累计即可，不用改代码。
+
 ## 动效
 
 入场用 `.rv` + `--i` 序号（`--i` 越大越晚，`min(…*68ms, 520ms)` 封顶，12 个元素也不会拖过 0.5s）。层级越大位移越大：`h1` 26px、`h2.big` 22px、正文 18px、标签 9px。
