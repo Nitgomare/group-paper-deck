@@ -515,21 +515,20 @@ function switchDeck(k){
   },300);
 }
 function fitAbs(){
+  // 从最大字号往下试探，取第一个能装下的字号；不做二分，避免早期布局未稳定时误判后不恢复
   document.querySelectorAll('.slide.paper').forEach(s=>{
     const box=s.querySelector('.abswrap'), p=s.querySelector('.abs');
     if(!box||!p) return;
     const cs=getComputedStyle(box);
-    const avail=box.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-4;
-    let lo=19, hi=28, best=19;
-    for(let k=0;k<18;k++){
-      const mid=(lo+hi)/2;
-      p.style.fontSize=mid+'px';
-      p.style.lineHeight=(mid>=25?1.72:mid>=21?1.84:1.95);
-      if(p.scrollHeight<=avail){best=mid;lo=mid}else{hi=mid}
+    const avail=box.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-6;
+    if(avail<40) return;              // 该 deck 仍是隐藏的，留给下一次
+    let fs=31;
+    for(; fs>=18; fs-=0.5){
+      p.style.fontSize=fs+'px';
+      p.style.lineHeight=(fs>=27?1.70:fs>=23?1.80:1.90);
+      if(p.scrollHeight<=avail) break;
     }
-    p.style.fontSize=best.toFixed(1)+'px';
-    p.style.lineHeight=(best>=25?1.72:best>=21?1.84:1.95);
-    if(p.scrollHeight>avail*1.02){p.style.fontSize='17px';p.style.lineHeight='1.9';}
+    if(fs<18){p.style.fontSize='18px';p.style.lineHeight='1.86';}
   });
 }
 function idxOf(){return Math.max(0,Math.min(n-1,Math.round(window.scrollY/window.innerHeight)))}
@@ -597,6 +596,8 @@ addEventListener('resize',()=>{fitAbs();fitLeft();sync()});
 addEventListener('load',()=>{fitAbs();fitLeft()});
 setTimeout(()=>{fitAbs();fitLeft()},260);
 setTimeout(()=>{fitAbs();fitLeft()},900);
+setTimeout(()=>{fitAbs();fitLeft()},1600);   // 字体替换完成后可能还要再量一次
+if(document.fonts&&document.fonts.addEventListener){document.fonts.addEventListener('loadingdone',()=>{fitAbs();fitLeft()})}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{fitAbs();fitLeft()});
 addEventListener('keydown',e=>{
   const cur=idxOf();
